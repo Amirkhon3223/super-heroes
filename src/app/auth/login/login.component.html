@@ -6,11 +6,13 @@
         <form>
           <div class="mb-4">
             <input class="w-full px-3 py-2 border rounded-md" type="email" placeholder="Email" [(ngModel)]="email"
-                   name="email">
+                   name="email" required>
+            <div *ngIf="!email" class="text-red-500">Email is required</div>
           </div>
           <div class="mb-4">
             <input class="w-full px-3 py-2 border rounded-md" type="password" placeholder="Password"
-                   [(ngModel)]="password" name="password">
+                   [(ngModel)]="password" name="password" required>
+            <div *ngIf="!password" class="text-red-500">Password is required</div>
           </div>
           <button class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition-colors"
                   type="button" (click)="login()">Login

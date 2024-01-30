@@ -10,6 +10,9 @@ import { HeroesListComponent } from './components/heroes-list/heroes-list.compon
 import { HeroDetailComponent } from './components/hero-detail/hero-detail.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './pages/home/home.component';
+import { HotToastModule, provideHotToastConfig } from '@ngneat/hot-toast';
+import { AuthService } from './services/auth.service';
+import { HeroService } from './services/hero.service';
 
 @NgModule({
   declarations: [
@@ -26,8 +29,18 @@ import { HomeComponent } from './pages/home/home.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    HotToastModule.forRoot({
+      reverseOrder: true,
+      dismissible: true,
+      autoClose: true,
+    }),
   ],
-  providers: [],
+  providers: [
+    provideHotToastConfig(),
+    AuthService,
+    HeroService
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { Hero } from '../../interfaces/hero';
 import { HeroService } from '../../services/hero.service';
 import { Router } from '@angular/router';
+import { HomeComponent } from '../../pages/home/home.component';
 
 @Component({
   selector: 'app-header',

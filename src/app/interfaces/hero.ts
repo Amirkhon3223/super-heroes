@@ -1,4 +1,3 @@
-// hero.model.ts
 export interface Hero {
   id: number;
   name: string;
@@ -11,28 +10,28 @@ export interface Hero {
     combat: string;
   };
   biography: {
-    full_name: string;
-    alter_egos: string;
+    "full-name": string;
+    "alter-egos": string;
     aliases: string[];
-    place_of_birth: string;
-    first_appearance: string;
+    "place-of-birth": string;
+    "first-appearance": string;
     publisher: string;
     alignment: string;
   };
   appearance: {
     gender: string;
     race: string;
-    height: string[];
-    weight: string[];
-    eye_color: string;
-    hair_color: string;
+    height: [string, string];
+    weight: [string, string];
+    "eye-color": string;
+    "hair-color": string;
   };
   work: {
     occupation: string;
     base: string;
   };
   connections: {
-    group_affiliation: string;
+    "group-affiliation": string;
     relatives: string;
   };
   image: {
