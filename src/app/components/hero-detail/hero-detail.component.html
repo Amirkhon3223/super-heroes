@@ -1,0 +1,73 @@
+<div class="max-w-7xl mx-auto py-48 h-screen" *ngIf="hero">
+  <button class="rounded-xl bg-blue-900 bg-opacity-50 px-5 py-2 text-lg font-medium my-10 text-white" routerLink="">Назад</button>
+  <div class="grid grid-cols-3 gap-12">
+    <div class="w-full fit relative rounded-xl">
+      <div class="text-center relative">
+        <div class="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div> <!-- Затемненный фон -->
+        <img [src]="hero.image.url" alt="{{ hero.name }}" class="w-full mx-auto rounded-xl">
+        <div class="absolute bottom-0 pb-5 w-full text-white">
+          <p class="font-bold text-4xl">{{ hero.name }}</p>
+          <div class="w-full">
+            <p>{{ hero.biography.full_name }}</p>
+            <p>{{ hero.biography.alter_egos }}</p>
+            <p>{{ hero.biography.aliases.join(', ') }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-full col-span-2">
+      <div class="grid grid-cols-2 w-full gap-10">
+        <div class="text-white text-2xl bg-blue-900 bg-opacity-50 p-5 rounded-xl">
+          <div class="flex justify-between items-center space-x-4">
+            <p class="font-medium">Place of Birth: </p>
+            <p class="text-yellow-500">{{ hero.biography.place_of_birth }}</p>
+          </div>
+          <div class="flex justify-between items-center space-x-4">
+            <p class="font-medium">First Appearance: </p>
+            <p class="text-yellow-500"> {{ hero.biography.first_appearance }}</p>
+          </div>
+          <div class="flex justify-between items-center space-x-4">
+            <p class="font-medium">Publisher: </p>
+            <p class="text-yellow-500">{{ hero.biography.publisher }}</p>
+          </div>
+          <div class="flex justify-between items-center space-x-4">
+            <p class="font-medium">Alignment: </p>
+            <p class="text-yellow-500">{{ hero.biography.alignment }}</p>
+          </div>
+          <div class="flex justify-between items-center space-x-4">
+            <p class="font-medium">Gender: </p>
+            <p class="text-yellow-500"> {{ hero.appearance.gender }}</p>
+          </div>
+        </div>
+        <div class="text-white text-2xl bg-blue-900 bg-opacity-50 p-5 rounded-xl">
+          <div class="flex justify-between items-center space-x-4">
+            <p>Race: </p>
+            <p class="text-yellow-500">{{ hero.appearance.race }}</p>
+          </div>
+          <div class="flex justify-between items-center space-x-4">
+            <p class="font-medium">Height: </p>
+            <p class="text-yellow-500">{{ hero.appearance.height[0] }} ({{ hero.appearance.height[1] }})</p>
+          </div>
+          <div class="flex justify-between items-center space-x-4">
+            <p class="font-medium">Weight: </p>
+            <p class="text-yellow-500"> {{ hero.appearance.weight[0] }} ({{ hero.appearance.weight[1] }})</p>
+          </div>
+          <div class="flex justify-between items-center space-x-4">
+            <p class="font-medium">Eye Color: </p>
+            <p class="text-yellow-500">{{ hero.appearance.eye_color }}</p>
+          </div>
+          <div class="flex justify-between items-center space-x-4">
+            <p class="font-medium">Hair Color: </p>
+            <p class="text-yellow-500">{{ hero.appearance.hair_color }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="text-white text-2xl w-full bg-blue-900 bg-opacity-50 mt-8 p-5 rounded-xl">
+        <p>Occupation: {{ hero.work.occupation }}</p>
+        <p>Base: {{ hero.work.base }}</p>
+        <p>Group Affiliation: {{ hero.connections.group_affiliation }}</p>
+        <p>Relatives: {{ hero.connections.relatives }}</p>
+      </div>
+    </div>
+  </div>
+</div>

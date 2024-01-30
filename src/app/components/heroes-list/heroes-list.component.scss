@@ -1,0 +1,19 @@
+.heroes-container {
+  margin: 20px;
+}
+
+.hero-card {
+  max-width: 300px;
+  margin: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.powerstats {
+  margin-top: 10px;
+}
+
+.powerstats p {
+  margin: 5px 0;
+}
