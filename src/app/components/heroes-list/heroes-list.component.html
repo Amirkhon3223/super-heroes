@@ -1,5 +1,9 @@
 <div class="max-w-7xl mx-auto py-10">
-  <div class="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 grid-cols-2 px-5 sm:gap-10 gap-4">
+  <div id="top">
+    <app-header></app-header>
+  </div>
+  <div
+      class="border-t-[0.5px] border-gray-700 grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 grid-cols-2 px-5 sm:gap-10 gap-4 pt-5">
     <div class="w-full fit relative rounded-xl cursor-pointer hover:scale-105 transition"
          *ngFor="let hero of visibleHeroes;  trackBy: trackByHeroId"
          (click)="onShowHeroDetails(hero)">
@@ -42,16 +46,16 @@
       Previous
     </button>
     <ng-container *ngFor="let pageNumber of getPageNumbers()">
-      <button class="mx-2 px-4 py-2 bg-[#14284f] rounded-md hover:scale-105 transition"
+      <button class="mx-2 px-4 py-2 bg-[#14284f] rounded-md hover:scale-105 transition text-gray-500 pagination-buttons"
               [ngClass]="{ 'text-white font-bold': pageNumber === currentPage }"
               (click)="onPageNumberClick(pageNumber)">
         {{ pageNumber }}
       </button>
-
     </ng-container>
     <button class="mx-2 px-4 py-2 bg-[#14284f] text-white rounded-md hover:scale-105 transition"
             (click)="onNextPage()">
       Next
     </button>
   </div>
+
 </div>

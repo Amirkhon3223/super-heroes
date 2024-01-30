@@ -23,17 +23,24 @@ export class SignUpComponent {
 
   signup(): void {
     if (this.userName.trim() !== '' && this.password.trim() !== '' && this.userNameValid && this.passwordValid) {
-      if (this.authService.register(this.userName, this.password)) {
-        this.router.navigateByUrl('/login').then(() => {
-          this.toast.success('Register was success');
-          this.toast.success('Now you can login )');
+      this.authService.register(this.userName, this.password)
+        .then((success) => {
+          if (success) {
+            this.router.navigateByUrl('/login').then(() => {
+              this.toast.success('Register was success');
+              this.toast.success('Now you can login )');
+            });
+          } else {
+            this.toast.error('This username already used by someone');
+            console.log('Error sign up');
+          }
+        })
+        .catch((error) => {
+          console.error('Error during registration:', error);
+          this.toast.error('An error occurred during registration');
         });
-      } else {
-        this.toast.error('This username already used by someone')
-        console.log('Error sign up');
-      }
     } else {
-      this.toast.warning('Please enter valid username and password')
+      this.toast.warning('Please enter valid username and password');
       console.log('Please enter valid username and password');
     }
   }

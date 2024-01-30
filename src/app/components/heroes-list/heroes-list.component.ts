@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Hero } from '../../interfaces/hero';
 import { HeroService } from '../../services/hero.service';
 import { Router } from '@angular/router';
-import { debounce, debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-heroes-list',
@@ -61,23 +61,35 @@ export class HeroesListComponent implements OnInit {
     const lastPage = Math.ceil(this.heroes.length / this.pageSize);
     if (this.currentPage < lastPage) {
       this.currentPage++;
+      this.onScrollTop();
     }
   }
 
   onPreviousPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
+      this.onScrollTop();
     }
   }
 
   onPageNumberClick(page: number) {
     this.currentPage = page;
+    this.onScrollTop();
   }
 
   getPageNumbers(): number[] {
+    // Определяем общее количество страниц
     const totalPages = Math.ceil(this.heroes.length / this.pageSize);
-    return Array.from({length: totalPages}, (_, index) => index + 1);
+    // Определяем количество видимых кнопок в пагинации (минимум из 11 и общего количества страниц)
+    const visibleButtons = Math.min(11, totalPages);
+    let startPage = Math.max(1, Math.min(
+      // текущую страницу на пагинации ставлю в центр, вычитая половину кнопок из текущей страницы
+      this.currentPage - Math.floor(visibleButtons / 2), totalPages - visibleButtons + 1
+    ));
+    // Массив для отображение в пагинации с startPage
+    return Array.from({length: visibleButtons}, (_, i) => startPage + i);
   }
+
 
   onShowHeroDetails(hero: Hero) {
     this.router.navigate(['/hero', hero.id]);
@@ -85,5 +97,10 @@ export class HeroesListComponent implements OnInit {
 
   trackByHeroId(index: number, hero: Hero): number {
     return hero.id;
+  }
+
+  // Добавил это, для того чтоб поднять страницу на верх после перехода по пагинациям
+  onScrollTop() {
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 }

@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, map, Observable, Subject } from 'rxjs';
 import { Hero } from '../interfaces/hero';
+import { API_BASE_URL, API_TOKEN } from '../../../api.config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HeroService {
 
-  private apiUrl = 'https://www.superheroapi.com/api.php/1098765791575396/';
+  private apiUrl: string = `${API_BASE_URL}/${API_TOKEN}`;
   public searchInput: Subject<string> = new Subject<string>();
 
   constructor(private http: HttpClient) {
@@ -18,8 +19,8 @@ export class HeroService {
     const observables: Observable<Hero>[] = [];
     // Мне удалось мне разом всех по АПИ взять все героев...
     // Пришлось вот так по ИД взять. Через программу Инсомнния тестил АПИ и там 644 героев..
-    // Тут цикл можно до 644 довести максимум.
-    for (let id = 1; id <= 50; id++) {
+    // Тут цикл нужно до 644 довести максимум, но сам 644 писать не стал думаю будет сильно грузить
+    for (let id = 1; id <= 500; id++) {
       observables.push(this.getHeroById(id.toString()));
     }
     return forkJoin(observables);

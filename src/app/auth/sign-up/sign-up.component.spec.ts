@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SignUpComponent } from './sign-up.component';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms'; // Добавлено
 
 describe('SignUpComponent', () => {
   let component: SignUpComponent;
@@ -14,13 +15,13 @@ describe('SignUpComponent', () => {
     const routerSpyObj = jasmine.createSpyObj('Router', ['navigateByUrl']);
 
     await TestBed.configureTestingModule({
-      declarations: [SignUpComponent], // объявление компонентов, используемых в тесте
+      declarations: [SignUpComponent],
+      imports: [FormsModule], // Добавлено FormsModule
       providers: [
-        // предоставляем сервисы, используемые в компоненте и подменяем их шпионами
         {provide: AuthService, useValue: authServiceSpyObj},
         {provide: Router, useValue: routerSpyObj}
       ]
-    }).compileComponents(); // компилируем компоненты
+    }).compileComponents();
 
     authServiceSpy = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
     routerSpy = TestBed.inject(Router) as jasmine.SpyObj<Router>;
@@ -35,32 +36,26 @@ describe('SignUpComponent', () => {
   // Тест проверки создания компонента
   it('должен быть создан', () => {
     expect(component).toBeTruthy();
-    // Проверяем, что компонент был создан
   });
 
-  // Тест успешной регистрации
-  it('должен вызывать метод authService.register и переходить на страницу входа при успешной регистрации', () => {
-    authServiceSpy.register.and.returnValue(true);
-    // Настриваем шпион AuthService на успешное выполнение регистрации
+// Тест успешной регистрации
+  it('должен вызывать метод authService.register и переходить на страницу входа при успешной регистрации', async () => {
+    authServiceSpy.register.and.returnValue(Promise.resolve(true)); // Используем Promise.resolve() для возврата успешного обещания
 
-    component.userName = 'test@example.com'; // Устанавливаем имя пользователя
-    component.password = 'password'; // Устанавливаем пароль
-    component.signup(); // Вызываем метод регистрации
+    component.userName = 'test@example.com';
+    component.password = 'password';
+    await component.signup(); // Используем await, чтобы дождаться завершения регистрации
 
-    // Проверяем вызов метода register
     expect(authServiceSpy.register).toHaveBeenCalledWith('test@example.com', 'password');
     expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('/login');
-    // Проверяем вызов метода navigateByUrl
   });
 
-  // Тест обработки ошибки при регистрации
-  it('должен записывать ошибку в консоль, когда регистрация неудачна', () => {
-    // Настриваем шпион AuthService на неуспешное выполнение регистрации
-    authServiceSpy.register.and.returnValue(false);
+// Тест обработки ошибки при регистрации
+  it('должен записывать ошибку в консоль, когда регистрация неудачна', async () => {
+    authServiceSpy.register.and.returnValue(Promise.resolve(false)); // Используем Promise.resolve() для возврата неудачного обещания
 
-    component.userName = 'test@example.com'; // Задаем имя пользователя
-    component.password = 'password'; // И пароль
-    component.signup(); // Вызываем метод регистрации
-
+    component.userName = 'test@example.com';
+    component.password = 'password';
+    await component.signup(); // Используем await, чтобы дождаться завершения регистрации
   });
 });

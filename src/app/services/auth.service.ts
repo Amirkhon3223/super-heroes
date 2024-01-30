@@ -40,7 +40,7 @@ export class AuthService {
     return false;
   }
 
-  register(userName: string, password: string): boolean {
+  async register(userName: string, password: string): Promise<boolean> {
     try {
       // Получаем уже зарегистрированных пользователей из локального хранилища
       const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');

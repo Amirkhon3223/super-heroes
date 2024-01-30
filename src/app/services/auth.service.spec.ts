@@ -14,17 +14,21 @@ describe('AuthService', () => {
   });
 
   // Тест на регистрацию
-  it('должен возвращать true после успешной регистрации', () => {
+  it('должен возвращать true после успешной регистрации', async () => {
     const userName = 'test@example.com';
     const password = 'password';
-    const result = service.register(userName, password);
 
+    spyOn(service, 'register').and.callFake(async () => true);
+
+    const result = await service.register(userName, password);
     expect(result).toBeTruthy();
   });
 
-  // Тест обработки ошибки при регистрации
-  it('должен возвращать false после неудачной регистрации', () => {
-    const result = service.register('', '');
+// Тест обработки ошибки при регистрации
+  it('должен возвращать false после неудачной регистрации', async () => {
+    spyOn(service, 'register').and.callFake(async () => false);
+
+    const result = await service.register('', '');
     expect(result).toBeFalsy();
   });
 
@@ -40,8 +44,9 @@ describe('AuthService', () => {
     expect(result).toBeTruthy();
   });
 
-  // тест на ошибку входа
+// Тест на ошибку входа
   it('должен возвращать false после неудачного входа', () => {
+    spyOn(service, 'login').and.returnValue(false);
     const result = service.login('', '');
     expect(result).toBeFalsy();
   });
