@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit {
     private router: Router
   ) {
     this.loggedIn$ = this.authService.isLoggedIn$();
+
   }
 
   ngOnInit(): void {
@@ -38,5 +39,8 @@ export class HeaderComponent implements OnInit {
 
   onSearchInputChange(event: any) {
     this.heroService.setSearchText(event.target.value);
+    this.heroService.filterHeroes(); // добавил вызов метода фильтрации
   }
+
+
 }

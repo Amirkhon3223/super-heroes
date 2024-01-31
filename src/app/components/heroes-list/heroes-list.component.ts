@@ -3,12 +3,12 @@ import { Hero } from '../../interfaces/hero';
 import { HeroService } from '../../services/hero.service';
 import { Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
-import { HotToastService } from '@ngneat/hot-toast';
+import { PageStateService } from '../../services/page-state.service';
 
 @Component({
   selector: 'app-heroes-list',
   templateUrl: './heroes-list.component.html',
-  styleUrl: './heroes-list.component.scss'
+  styleUrls: ['./heroes-list.component.scss']
 })
 export class HeroesListComponent implements OnInit {
   heroes: Hero[] = [];
@@ -20,18 +20,25 @@ export class HeroesListComponent implements OnInit {
 
   originalHeroes: Hero[] = []
 
-  constructor(private router: Router, private heroService: HeroService, private toast: HotToastService) {
+  constructor(
+    private router: Router,
+    private heroService: HeroService,
+    private pageStateService: PageStateService
+    ) {
   }
 
   ngOnInit(): void {
+    const savedPage = this.pageStateService.getCurrentPage();
+    if (savedPage) {
+      this.currentPage = savedPage;
+    }
     this.heroService.getAllSuperheroes().subscribe({
       next: (heroes: Hero[]) => {
         this.originalHeroes = [...heroes];
         this.heroes = heroes;
       },
     });
-    // Наблюдатель для поля текста по поиску )
-    this.heroService.searchInput.pipe(
+    this.heroService.searchText$.pipe(
       debounceTime(300),
       distinctUntilChanged(),
       takeUntil(this.destroy$)
@@ -50,6 +57,7 @@ export class HeroesListComponent implements OnInit {
     this.heroes = this.searchText.trim()
       ? this.originalHeroes.filter(hero => hero.name.toLowerCase().includes(this.searchText.toLowerCase()))
       : [...this.originalHeroes];
+    this.currentPage = 1; // sbros текущую страницу при фильтрации
   }
 
   get visibleHeroes(): Hero[] {
@@ -61,6 +69,7 @@ export class HeroesListComponent implements OnInit {
     const lastPage = Math.ceil(this.heroes.length / this.pageSize);
     if (this.currentPage < lastPage) {
       this.currentPage++;
+      this.pageStateService.setCurrentPage(this.currentPage);
       this.onScrollTop();
     }
   }
@@ -68,13 +77,27 @@ export class HeroesListComponent implements OnInit {
   onPreviousPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
+      this.pageStateService.setCurrentPage(this.currentPage);
       this.onScrollTop();
     }
   }
 
   onPageNumberClick(page: number) {
     this.currentPage = page;
+    this.pageStateService.setCurrentPage(this.currentPage);
     this.onScrollTop();
+  }
+
+  onShowHeroDetails(hero: Hero) {
+    // Сохраняем текущую страницу в localStorage
+    localStorage.setItem('currentPage', this.currentPage.toString());
+    this.router.navigate(['/hero', hero.id]);
+  }
+
+
+  // Добавил это, для того чтоб поднять страницу на верх после перехода по пагинациям
+  onScrollTop() {
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
   getPageNumbers(): number[] {
@@ -91,16 +114,8 @@ export class HeroesListComponent implements OnInit {
   }
 
 
-  onShowHeroDetails(hero: Hero) {
-    this.router.navigate(['/hero', hero.id]);
-  }
-
   trackByHeroId(index: number, hero: Hero): number {
     return hero.id;
   }
 
-  // Добавил это, для того чтоб поднять страницу на верх после перехода по пагинациям
-  onScrollTop() {
-    window.scrollTo({top: 0, behavior: 'smooth'});
-  }
 }

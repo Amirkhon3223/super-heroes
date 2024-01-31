@@ -9,7 +9,7 @@ import { HotToastService } from '@ngneat/hot-toast';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  email: string = '';
+  userName: string = '';
   password: string = '';
 
   constructor(
@@ -20,21 +20,21 @@ export class LoginComponent {
   }
 
   async login(): Promise<void> {
-    if (this.email.trim() !== '' && this.password.trim() !== '') {
+    if (this.userName.trim() !== '' && this.password.trim() !== '') {
       const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-      const existingUser = users.find((user: any) => user.userName === this.email && user.password === this.password);
+      const existingUser = users.find((user: any) => user.userName === this.userName && user.password === this.password);
       if (existingUser) {
-        const success = await this.authService.login(this.email, this.password);
+        const success = await this.authService.login(this.userName, this.password);
         if (success) {
           this.router.navigateByUrl('/');
         } else {
           this.toast.error('Failed to login.');
         }
       } else {
-        this.toast.error('Invalid email or password');
+        this.toast.error('Invalid userName or password');
       }
     } else {
-      this.toast.warning('Please enter email and password');
+      this.toast.warning('Please enter userName and password');
     }
   }
 }

@@ -23,6 +23,7 @@ export class AuthService {
     return new Promise((resolve, reject) => {
       // Если вход успешный:
       localStorage.setItem('loggedIn', 'true');
+      localStorage.setItem('username', userName);
       this.loggedIn$.next(true);
       resolve(true);
       // Если вход неуспешный:
@@ -41,7 +42,7 @@ export class AuthService {
 
   async register(userName: string, password: string): Promise<boolean> {
     try {
-      // Берем уже пользователей из локального хранилища
+      // Берем пользователей из локального хранилища
       const registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
       // Смотрим, есть ли уже пользователь с таким userName
       const existingUser = registeredUsers.find((user: any) => user.userName === userName);
