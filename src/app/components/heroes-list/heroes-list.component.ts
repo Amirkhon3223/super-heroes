@@ -3,6 +3,7 @@ import { Hero } from '../../interfaces/hero';
 import { HeroService } from '../../services/hero.service';
 import { Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-heroes-list',
@@ -14,10 +15,12 @@ export class HeroesListComponent implements OnInit {
   currentPage = 1;
   pageSize = 15;
   searchText: string = '';
+
   destroy$: Subject<void> = new Subject<void>();
+
   originalHeroes: Hero[] = []
 
-  constructor(private router: Router, private heroService: HeroService) {
+  constructor(private router: Router, private heroService: HeroService, private toast: HotToastService) {
   }
 
   ngOnInit(): void {
@@ -26,9 +29,6 @@ export class HeroesListComponent implements OnInit {
         this.originalHeroes = [...heroes];
         this.heroes = heroes;
       },
-      error: (error) => {
-        console.error('Error fetching heroes:', error);
-      }
     });
     // Наблюдатель для поля текста по поиску )
     this.heroService.searchInput.pipe(

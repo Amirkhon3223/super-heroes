@@ -19,20 +19,22 @@ export class LoginComponent {
   ) {
   }
 
-  login(): void {
+  async login(): Promise<void> {
     if (this.email.trim() !== '' && this.password.trim() !== '') {
-      if (this.authService.login(this.email, this.password)) {
-        localStorage.setItem('username', this.email);
-        this.router.navigateByUrl('/').then(() => {
-          window.location.reload();
-        });
+      const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+      const existingUser = users.find((user: any) => user.userName === this.email && user.password === this.password);
+      if (existingUser) {
+        const success = await this.authService.login(this.email, this.password);
+        if (success) {
+          this.router.navigateByUrl('/');
+        } else {
+          this.toast.error('Failed to login.');
+        }
       } else {
-        this.toast.error('Invalid email or password')
-        console.log("Invalid email or password");
+        this.toast.error('Invalid email or password');
       }
     } else {
-      this.toast.warning('Please enter email and password')
-      console.log("Please enter email and password");
+      this.toast.warning('Please enter email and password');
     }
   }
 }

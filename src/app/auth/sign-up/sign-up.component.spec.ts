@@ -44,7 +44,7 @@ describe('SignUpComponent', () => {
 
     component.userName = 'test@example.com';
     component.password = 'password';
-    await component.signup(); // Используем await, чтобы дождаться завершения регистрации
+    await component.signup(); //  await, чтобы ждать завершения регистрации
 
     expect(authServiceSpy.register).toHaveBeenCalledWith('test@example.com', 'password');
     expect(routerSpy.navigateByUrl).toHaveBeenCalledWith('/login');
@@ -56,6 +56,6 @@ describe('SignUpComponent', () => {
 
     component.userName = 'test@example.com';
     component.password = 'password';
-    await component.signup(); // Используем await, чтобы дождаться завершения регистрации
+    await component.signup(); //  тут также тот await
   });
 });

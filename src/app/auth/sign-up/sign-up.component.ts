@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { HotToastService, Toast } from '@ngneat/hot-toast';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-sign-up',
@@ -21,29 +21,26 @@ export class SignUpComponent {
   ) {
   }
 
-  signup(): void {
+  async signup(): Promise<void> {
     if (this.userName.trim() !== '' && this.password.trim() !== '' && this.userNameValid && this.passwordValid) {
-      this.authService.register(this.userName, this.password)
-        .then((success) => {
-          if (success) {
-            this.router.navigateByUrl('/login').then(() => {
-              this.toast.success('Register was success');
-              this.toast.success('Now you can login )');
-            });
-          } else {
-            this.toast.error('This username already used by someone');
-            console.log('Error sign up');
-          }
-        })
-        .catch((error) => {
-          console.error('Error during registration:', error);
-          this.toast.error('An error occurred during registration');
-        });
+      const users = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+      const existingUser = users.find((user: any) => user.userName === this.userName);
+      if (existingUser) {
+        this.toast.error('This username is already used by someone.');
+      } else {
+        const success = await this.authService.register(this.userName, this.password);
+        if (success) {
+          this.router.navigateByUrl('/login')
+            this.toast.success('Registration successful! Now you can log in.');
+        } else {
+          this.toast.error('Failed to register user.');
+        }
+      }
     } else {
-      this.toast.warning('Please enter valid username and password');
-      console.log('Please enter valid username and password');
+      this.toast.warning('Please enter a valid username and password.');
     }
   }
+
 
   validateUserName(): void {
     this.userNameValid = /^[a-zA-Z0-9]{6,}$/.test(this.userName);

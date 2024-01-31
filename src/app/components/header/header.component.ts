@@ -1,40 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { Subject } from 'rxjs';
-import { Hero } from '../../interfaces/hero';
+import { Observable } from 'rxjs';
 import { HeroService } from '../../services/hero.service';
 import { Router } from '@angular/router';
-import { HomeComponent } from '../../pages/home/home.component';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
   username: string | null = null;
-  loggedIn: boolean = false;
+  loggedIn$: Observable<boolean>;
 
   constructor(
     private authService: AuthService,
     private heroService: HeroService,
     private router: Router
   ) {
+    this.loggedIn$ = this.authService.isLoggedIn$();
   }
 
   ngOnInit(): void {
-    this.loggedIn = this.authService.isLoggedIn();
-    if (this.loggedIn) {
-      this.username = localStorage.getItem('username');
-    }
+    this.loggedIn$.subscribe(loggedIn => {
+      if (loggedIn) {
+        this.username = localStorage.getItem('username');
+      } else {
+        this.username = null;
+      }
+    });
   }
-
 
   logout(): void {
     this.authService.logout();
-    this.loggedIn = false;
-    this.username = null;
-    this.router.navigate(['login'])
+    this.router.navigate(['login']);
   }
 
   onSearchInputChange(event: any) {
