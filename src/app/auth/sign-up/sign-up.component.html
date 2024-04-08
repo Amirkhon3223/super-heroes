@@ -1,0 +1,46 @@
+<div class="flex justify-center items-center h-screen">
+  <div class="bg-white shadow-md rounded pt-6 pb-0 mb-4 max-w-md w-full">
+    <div class="mb-4 px-8">
+      <h2 class="text-2xl font-bold mb-4">Sign Up</h2>
+      <form>
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="userName">
+            Username
+          </label>
+          <input
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="Username" type="text" placeholder="Username"
+              [(ngModel)]="userName" name="Username"
+              (input)="validateUserName()" required>
+          <div *ngIf="!userName" class="text-red-500">Username is required</div>
+          <div *ngIf="userName && !userNameValid" class="text-red-500">Username must be at least 6 symbols</div>
+        </div>
+        <div class="mb-6">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+            Password
+          </label>
+          <input
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="password" type="password" placeholder="Password"
+              [(ngModel)]="password" name="password"
+              (input)="validatePassword()" required>
+          <div *ngIf="!password" class="text-red-500">Password is required</div>
+          <div *ngIf="password && !passwordValid" class="text-red-500">Password must be at least 8 characters long</div>
+        </div>
+        <div class="flex items-center justify-between">
+          <button
+              class="bg-blue-500 hover:bg-blue-700 w-full text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="button" (click)="signup()">
+            Sign Up
+          </button>
+        </div>
+      </form>
+    </div>
+    <p class="text-center pt-2 font-medium">Already have a account?</p>
+    <button class="w-full bg-blue-700 text-white py-2 hover:bg-blue-600 transition-colors"
+            type="button"
+            routerLink="/login"
+    >Login
+    </button>
+  </div>
+</div>

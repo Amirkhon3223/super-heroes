@@ -1,0 +1,128 @@
+<div class="max-w-7xl mx-auto pt-16 pb-60 px-5" *ngIf="hero">
+  <button class="rounded-xl bg-gray-900 bg-opacity-50 px-5 py-2 text-lg font-medium my-10 text-white"
+          (click)="goBack()"
+  >
+    Назад
+  </button>
+  <div class="grid grid-cols-3 gap-12">
+    <div class="text-center relative rounded-xl h-fit">
+      <div class="absolute inset-0 bg-gradient-to-t from-[#162a4f] to-40% rounded-xl"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-[#162640] to-90% rounded-xl"></div>
+      <img [src]="hero.image.url"
+           alt="{{ hero.name }}"
+           class="w-full mx-auto rounded-xl">
+      <div class="absolute top-0 left-0 w-full flex justify-between items-start text-left p-4 pt-5 text-white">
+        <div class="icons flex justify-start items-center space-x-1">
+          <img src="/assets/vau1.svg" alt="Super Heroes" class="w-12 h-12">
+          <span class="font-medium text-lg text-gray-300">{{ hero.biography.publisher }}</span>
+        </div>
+        <div class="flex-row justify-end items-end">
+          <div class="flex items-center text-right justify-end">
+            <span class="font-medium text-sm text-gray-300">{{ hero.powerstats.intelligence }} : </span>
+            <img src="/assets/intelligence.svg" alt="Super Heroes" class="w-8 h-8">
+          </div>
+          <div class="flex items-center text-right justify-end">
+            <span class="font-medium text-sm text-gray-300">{{ hero.powerstats.strength }} : </span>
+            <img src="/assets/strength.svg" alt="Super Heroes" class="w-8 h-8">
+          </div>
+          <div class="flex items-center text-right justify-end">
+            <span class="font-medium text-sm text-gray-300">{{ hero.powerstats.speed }} : </span>
+            <img src="/assets/speed.svg" alt="Super Heroes" class="w-8 h-8">
+          </div>
+        </div>
+      </div>
+      <div class="absolute bottom-0 w-full text-white">
+        <span class="font-bold text-3xl">{{ hero.name }}</span>
+        <p class="font-light text-lg text-gray-300">{{ hero.biography['full-name'] }}</p>
+      </div>
+    </div>
+
+    <div class="w-full col-span-2">
+      <div class="grid grid-cols-3 w-full gap-6 ">
+        <div
+            class="col-span-2 flex flex-col justify-center h-full w-full text-white text-2xl font-bold bg-gray-900 bg-opacity-50 p-5 space-y-2 rounded-xl">
+          <div class="flex items-center space-x-2">
+            <p>Place of Birth : </p>
+            <p class="text-yellow-400 text-left font-light text-md">
+              {{ hero.biography['place-of-birth'] }}
+            </p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <p>First Appearance : </p>
+            <p class="text-yellow-400 text-left font-light text-md">
+              {{ hero.biography['first-appearance'] }}
+            </p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <p>Publisher : </p>
+            <p class="text-yellow-400 text-left font-light text-md">
+              {{ hero.biography.publisher }}
+            </p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <p>Alignment : </p>
+            <p class="text-yellow-400 text-left font-light text-md">
+              {{ hero.biography.alignment }}
+            </p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <p>Gender : </p>
+            <p class="text-yellow-400 text-left font-light text-md">
+              {{ hero.appearance.gender }}
+            </p>
+          </div>
+          <!--       powerstats   -->
+          <div class="flex items-center space-x-2">
+            <p>Combat : </p>
+            <p class="text-yellow-400 text-left font-light text-md">
+              {{ hero.powerstats.combat }}
+            </p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <p>Power : </p>
+            <p class="text-yellow-400 text-left font-light text-md">
+              {{ hero.powerstats.power }}
+            </p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <p>Durability : </p>
+            <p class="text-yellow-400 text-left font-light text-md">
+              {{ hero.powerstats.durability }}
+            </p>
+          </div>
+        </div>
+        <div
+            class="col-span-1 flex flex-col justify-center h-full w-full text-white text-2xl font-bold bg-gray-900 bg-opacity-50 p-5 space-y-2 rounded-xl">
+          <div>
+            <span>Race : </span>
+            <p class="text-yellow-400 text-left font-light text-md">{{ hero.appearance.race }}</p>
+          </div>
+          <div>
+            <span>Height : </span>
+            <p class="text-yellow-400 text-left font-light text-md">{{ hero.appearance.height[0] }}
+              ({{ hero.appearance.height[1] }})</p>
+          </div>
+          <div>
+            <span>Weight : </span>
+            <p class="text-yellow-400 text-left font-light text-md"> {{ hero.appearance.weight[0] }}
+              ({{ hero.appearance.weight[1] }})</p>
+          </div>
+          <div>
+            <span>Eye Color : </span>
+            <p class="text-yellow-400 text-left font-light text-md">{{ hero.appearance['eye-color'] }}</p>
+          </div>
+          <div>
+            <span>Hair Color : </span>
+            <p class="text-yellow-400 text-left font-light text-md">{{ hero.appearance['hair-color'] }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="text-white text-lg w-full bg-gray-900 bg-opacity-50 mt-8 p-5 rounded-xl">
+    <p><span class="font-bold text-2xl">Occupation</span> : {{ hero.work.occupation }}</p>
+    <p><span class="font-bold text-2xl">Base</span> : {{ hero.work.base }}</p>
+    <p><span class="font-bold text-2xl">Group Affiliation</span> : {{ hero.connections['group-affiliation'] }}</p>
+    <p><span class="font-bold text-2xl">Relatives</span> : {{ hero.connections.relatives }}</p>
+  </div>
+</div>
